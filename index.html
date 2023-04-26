@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Simple CAD Programme_Wei-Chun, Huang</title>
+	<script src="main.js"></script>
+	<script src="operation.js"></script>
+	<script src="draw.js"></script>
+	<script src="geometry.js"></script>
+	<script src="cubic.js"></script>
+	<script src="pb.js"></script>
+	<script src="bezier.js"></script>
+	<script src="bspline.js"></script>
+	<script src="move.js"></script>
+	<style type="text/css">
+		canvas { border: 0px solid black; }
+	</style>
+</head>
+<body onload="initialize()">
+	<div id="wholeDiv"; style="width: 1020px; height: 500px; float: left">
+		<div id="wholeDiv_1"; style="width: 400px; height: 500px; float: left">
+				<div id="PANEL"; style="border-style: dashed; border-width: thin; width: 400px; height: 200px; float: left">
+					
+					<div id="point" style="float: right">(0,0,0)</div>
+					Draw and Create Your 3D Model<br><hr>
+					
+					<form id="panelForm">
+					<div id="PANEL_1"; style="border-style: none; border-width: thin; width: 400px; height: 100px; float: left">
+						<div id="PANEL_1_1"; style="border-style: none; border-width: thin; width: 400px; height: 25px; float: left">
+							<div id="PANEL_1_1_1"; style="border-style: none; border-width: thin; width: 40px; height: 25px; float: left"> </div>
+							
+							<div id="PANEL_1_1_2"; style="border-style: none; border-width: thin; width: 100px; height: 25px; float: left">Color</div>
+							<div id="PANEL_1_1_3"; style="border-style: none; border-width: thin; height: 25px; float: left">
+								<input name="colorName" type="color" id="colorID" style=" width: 70px; height: 20px;"></div>
+						</div>
+
+						<div id="PANEL_1_3"; style="border-style: none; border-width: thin; width: 400px; height: 25px; float: left">
+							<div id="PANEL_1_3_1"; align="right"; style="border-style: none; border-width: thin; width: 40px; height: 25px; float: left">
+								<input name="radio_type" type="radio" id="radio_geometry" onclick="if(this.checked){radio_Geometry()}">&nbsp;</div>
+							<div id="PANEL_1_3_2"; style="border-style: none; border-width: thin; width: 100px; height: 25px; float: left">Geometry</div>
+							<div id="PANEL_1_3_forHide"; style="border-style: none; border-width: thin; height: 25px; float: left; visibility:hidden">
+								<div id="PANEL_1_3_forHide_1"; style="border-style: none; border-width: thin; width: 100px; height: 25px; float: left;">
+									<span id="block_1_3_3_1_1" style="width: 50px; height: 25px; float: left">
+										Side:</span>
+									<span id="block_1_3_3_1_2" style="width: 50px; height: 25px; float: left">
+										<input name="text_geo" type="text" id="text_side" size="1" style="width: 20px; height: 15px;"></span></div>
+								<div id="PANEL_1_3_forHide_2"; style="border-style: none; border-width: thin; height: 25px; float: left;">
+									<span id="block_1_3_2_1" style="width: 65px; height: 25px; float: left">
+										Radius:</span>
+									<span id="block_1_3_2_2" style="width: 50px; height: 25px; float: left">
+										<input name="text_geo" type="text" id="text_radius" size="1" style="width: 20px; height: 15px;"></span></div>
+							</div>
+						</div>
+						<div id="PANEL_1_4"; style="border-style: none; border-width: thin; width: 400px; height: 25px; float: left">
+							<div id="PANEL_1_4_1"; align="right"; style="border-style: none; border-width: thin; width: 40px; height: 25px; float: left">
+								<input name="radio_type" type="radio" id="radio_curve" onclick="if(this.checked){radio_Curve()}">&nbsp;</div>
+							<div id="PANEL_1_4_2"; style="border-style: none; border-width: thin; width: 100px; height: 25px; float: left">Curve</div>
+							<div id="PANEL_1_4_forHide"; style="border-style: none; border-width: thin; height: 25px; float: left; visibility:hidden">
+								<select id="select_CurveID" style="text-align:center; width:120px;" onchange="select_Curve()">
+									<option value="select_noneCurve">...</option>
+									<option value="select_cubic">Cubic Spline</option>
+									<option value="select_pb">Parabolic Blending</option>
+									<option value="select_bezier">Bezier</option>
+									<option value="select_bspline">B-spline</option>
+								</select></div>
+						</div>
+						<div id="PANEL_1_5"; style="border-style: none; border-width: thin; width: 400px; height: 25px; float: left">
+							<div id="PANEL_1_5_1"; align="right"; style="border-style: none; border-width: thin; width: 40px; height: 25px; float: left">
+								<input name="radio_type" type="radio" id="radio_transform" onclick="if(this.checked){radio_Transform()}">&nbsp;</div>
+							<div id="PANEL_1_5_2"; style="border-style: none; border-width: thin; width: 100px; height: 25px; float: left">Transform</div>
+							<div id="PANEL_1_5_forHide"; style="border-style: none; border-width: thin; height: 25px; float: left; visibility:hidden">
+								<div id="PANEL_1_5_forHide_1"; style="border-style: none; border-width: thin; width: 90px; height: 25px; float: left">
+									<select id="select_TransID" style="text-align:center; width:70px;" onchange="select_Trans()">
+										<option value="select_noneTrans">...</option>
+										<option value="select_move">Move</option>
+										<option value="select_rotate">Rotate</option>
+										<option value="select_zoom">Zoom</option>
+										<option value="select_reflect">Reflect</option>
+									</select></div>
+								<div id="PANEL_1_5_forHide_2"; style="border-style: none; border-width: thin; width: 100px; height: 25px; float: left"> </div>
+								<div id="PANEL_1_5_forHide_3"; style="border-style: none; border-width: thin; width: 60px; height: 25px; float: left"> </div>
+							</div>
+						</div>
+					</div>
+					
+					</form>
+					<div id="PANEL_1.5" align="center" style="border-style: none; border-width: thin; width: 400px; height: 23px; float: left">
+							<input id="button_3D" type="button" value="3D model" style="width:100px;" onclick="produceModel()">
+							<input id="button_clear" type="button" value="Clear" style="width:100px;" onclick="initialize()">
+					</div>
+					<div id="PANEL_2" align="center" style="border-style: none; border-width: thin; width: 400px; height: 23px; float: left; visibility:hidden">
+						<div>
+							
+							<select id="select_download" style="text-align:center; width:100px;" onclick="document.onmousemove = null;document.onmousedown = null;">
+								<option value="curve">curve</option>
+								<option value="3d_model">isometric</option>
+								<option value="canvas_XY">XY</option>
+								<option value="canvas_YZ">YZ</option>
+								<option value="canvas_XZ">XZ</option>
+							</select>
+							<a href="#" download="temp.png" style="text-decoration:none;" onclick="
+																				switch( document.getElementById('select_download').value ){
+																					case 'curve':
+																						download_curve();
+																						this.href=canvas_Draw.toDataURL();
+																					break;
+																					case '3d_model':
+																						this.href=canvas_ISO.toDataURL();
+																					break;
+																					case 'canvas_XY':
+																						this.href=canvas_XY.toDataURL();
+																					break;
+																					case 'canvas_YZ':
+																						this.href=canvas_YZ.toDataURL();
+																					break;
+																					case 'canvas_XZ':
+																						this.href=canvas_XZ.toDataURL();
+																					break;
+																				}
+																				" >
+								<input id="button_dl" type="button" value="Download" style="width:100px;">
+							</a>
+							
+
+						</div>
+					</div>
+					
+					<div id="msgPanel" align="center" style="color: white; border-style: none; border-width: thin; width: 400px; height: 18px; float: left"> </div>
+				</div>
+				
+				
+
+				
+				<div id="canvasDiv_Draw"; style="border-style: dashed; border-width: thin; width: 400px; height: 300px; float: left">
+					<canvas id="canvas_Draw" width="400" height="300" style="background-position: center; background-image: url('image/axis.png'); background-repeat: no-repeat;"> </canvas>
+				</div>
+				<div id="steps" style="float: left">
+					Steps:<br>
+					1.Click the color box to change color<br>
+					2.Choose "Geometry" or "Curve"<br>
+					&nbsp&nbsp Geometry - Set arguments<br>
+					&nbsp&nbsp Curve - Choose what curve you want to draw<br>
+					3.Draw by clicking on the canvas above<br>
+					&nbsp&nbsp (A curve can be adjusted by dragging the red points<br>
+					&nbsp&nbsp around it)<br>
+					4.Adjust your drawing by the Function "Transform"<br>
+					&nbsp&nbsp Move - Drag your drawing on the canvas<br>
+					&nbsp&nbsp Rotate / Zoom - Set arguments and click "+" / "-"<br>
+					&nbsp&nbsp Reflect - Set arguments and click "X" / "Y"<br>
+					5.Click "3D model" to generate a 3D model<br>
+					6.Download your drawing after generating 3D model<br>
+				</div>
+		</div>
+		
+		<div id="wholeDiv_2"; style="width: 605px; height: 500px; float: left; visibility:hidden">
+				<div id="canvasDiv_XY"; style="border-style: dashed; border-width: thin; width: 300px; height: 250px; float: left">
+					<canvas id="canvas_XY" width="300" height="250" style="background-position: left bottom; background-image: url('image/canvas_XY.png'); background-repeat: no-repeat;"> </canvas>
+				</div>
+				<div id="canvasDiv_ISO"; style="border-style: dashed; border-width: thin; width: 300px; height: 250px; float: left">
+					<canvas id="canvas_ISO" width="300" height="250" style="background-position: left bottom; background-image: url('image/canvas_ISO.png'); background-repeat: no-repeat;"> </canvas>
+				</div>
+				<div id="canvasDiv_XZ"; style="border-style: dashed; border-width: thin; width: 300px; height: 250px; float: left">
+					<canvas id="canvas_XZ" width="300" height="250" style="background-position: left bottom; background-image: url('image/canvas_XZ.png'); background-repeat: no-repeat;"> </canvas>
+				</div>
+				<div id="canvasDiv_YZ"; style="border-style: dashed; border-width: thin; width: 300px; height: 250px; float: left">
+					<canvas id="canvas_YZ" width="300" height="250" style="background-position: left bottom; background-image: url('image/canvas_YZ.png'); background-repeat: no-repeat;"> </canvas>
+				</div>
+		</div>
+	</div>
+					<div id="printArea"> </div>
+</body>
+
+</html>
